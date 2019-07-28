@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "env",
+  "BINARYNINJA_IPYTHON_CONNECTIONFILE={connection_file}",
+  "/Applications/Binary Ninja.app/Contents/MacOS/binaryninja"
+ ],
+ "display_name": "Binary Ninja",
+ "language": "python"
+}

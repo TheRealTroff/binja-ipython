@@ -2,6 +2,7 @@
 import threading
 import sys
 import signal
+from os import environ
 # this is the heavy monkey-patching that actually works
 # i.e. you can start the kernel fine and connect to it e.g. via
 # ipython console --existing
@@ -15,6 +16,11 @@ import ctypes
 #from IPython.kernel.zmq.kernelapp import IPKernelApp
 from ipykernel.kernelapp import IPKernelApp
 
+# If we're started from a notebook, this will be used to pass the 
+# connection file the notebook server expects us to use.
+ARGV_VARIABLE='BINARYNINJA_IPYTHON_CONNECTIONFILE'
+
+
 class KernelWrapper():
     def __init__(self):
         self.app = IPKernelApp.instance()
@@ -25,8 +31,15 @@ class KernelWrapper():
         self.thread.start()
 
     def _run_kernel(self):
+        argv = None
+        try:
+            connection_file = environ[ARGV_VARIABLE]
+            argv = ['-f', connection_file]
+        except KeyError:
+            pass
+
         self.app.init_signal = lambda *args, **kw: None
-        self.app.initialize()
+        self.app.initialize(argv)
         self.app.start()
 
 
