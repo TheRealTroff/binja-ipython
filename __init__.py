@@ -41,11 +41,10 @@ class KernelWrapper():
         return
 
 
-
-
+# The IPython kernel prints its banner to sys.__stdout__
+sys.__stdout__ = sys.stdout
 
 kw = KernelWrapper()
-
 kw.start()
 
 
